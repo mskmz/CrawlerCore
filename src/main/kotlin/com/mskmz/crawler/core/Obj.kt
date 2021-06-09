@@ -11,9 +11,9 @@ object CoreObj {
     lateinit var driver: ChromeDriver
 
     fun init(
-        exec: ScheduledExecutorService = Executors.newScheduledThreadPool(3),
         path: String = "",
-        driver: ChromeDriver? = null
+        exec: ScheduledExecutorService = Executors.newScheduledThreadPool(3),
+        driver: ChromeDriver? = null,
     ) {
         this.exec = exec
         driver?.let {
