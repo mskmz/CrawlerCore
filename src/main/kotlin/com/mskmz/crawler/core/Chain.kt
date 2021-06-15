@@ -26,7 +26,10 @@ class ChainManager {
     }
 
     //用于实现切换分支
-    fun branch(str: String, chain: ManagerChain = ManagerChain(this)): ManagerChain {
+    fun branch(str: String = "main", chain: ManagerChain = ManagerChain(this)): ManagerChain {
+        if (getChain() != null) {
+            return getChain()!!
+        }
         chainMap[str] = chain
         chain.bindTag(str)
         branchList.add(str)
