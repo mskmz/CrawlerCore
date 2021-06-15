@@ -36,12 +36,8 @@ class ChainManager {
         return chain
     }
 
-    fun getChain(str: String): ManagerChain? {
+    fun getChain(str: String = getCurrBranch()): ManagerChain? {
         return chainMap[str]
-    }
-
-    fun getChain(): ManagerChain? {
-        return getChain(getCurrBranch())
     }
 
     fun getCurrBranch(): String {
@@ -166,6 +162,10 @@ open class Chain {
             return
         }
         next()
+    }
+
+    open fun addNode(node: Node) {
+        chainList.add(node)
     }
 
     open fun next() {
