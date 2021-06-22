@@ -136,6 +136,7 @@ class ManagerChain(manager: ChainManager) : Chain() {
         }
         if (index >= chainList.size) {
             managerWeak.get()?.finialBranch(tag)
+            index = -1
             return
         }
         chainList[index].invoke()
@@ -157,6 +158,10 @@ open class Chain {
         index = -1
     }
 
+    fun preNode() {
+        index--
+    }
+
     fun run() {
         if (invoke) {
             return
@@ -174,6 +179,7 @@ open class Chain {
             index = 0
         }
         if (index >= chainList.size) {
+            index = -1
             return
         }
         chainList[index].invoke()
