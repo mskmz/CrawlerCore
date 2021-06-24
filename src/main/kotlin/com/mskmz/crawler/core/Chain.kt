@@ -25,10 +25,18 @@ class ChainManager {
         HashMap<String, EventListen>()
     }
 
+    fun branchN(str: String = "main", node: Node? = null, rep: Boolean = false): ManagerChain {
+        var chain = ManagerChain(this)
+        if (node != null) {
+            chain.addNode(node)
+        }
+        return branch(str, chain, rep)
+    }
+
     //用于实现切换分支
-    fun branch(str: String = "main", chain: ManagerChain = ManagerChain(this)): ManagerChain {
-        if (getChain() != null) {
-            return getChain()!!
+    fun branch(str: String = "main", chain: ManagerChain = ManagerChain(this), rep: Boolean = false): ManagerChain {
+        if (getChain(str) != null && !rep) {
+            return getChain(str)!!
         }
         chainMap[str] = chain
         chain.bindTag(str)
@@ -118,6 +126,7 @@ class ManagerChain(manager: ChainManager) : Chain() {
         managerWeak.get()?.registerEvent(event, eventMap[event]!!, globe)
     }
 
+
     override fun eventRequest(event: String, reqP: LinkedHashMap<String, Any>): LinkedHashMap<String, Any>? {
         if (reqP["globe"] != null && reqP["globe"] as Boolean) {
             return eventRequestGlobe(event, reqP)
@@ -181,6 +190,7 @@ open class Chain {
 
     open fun addNode(node: Node) {
         chainList.add(node)
+        node.bind(this)
     }
 
     open fun next() {
