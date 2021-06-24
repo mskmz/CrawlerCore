@@ -162,6 +162,16 @@ open class Chain {
         index--
     }
 
+    fun end() {
+        ((chainList.size - index) until chainList.size).forEach {
+            chainList.removeAt(index)
+        }
+    }
+
+    fun currIndex(): Int {
+        return index - 1;
+    }
+
     fun run() {
         if (invoke) {
             return
