@@ -243,7 +243,7 @@ abstract class Node {
         chain.get()!!.eventRegister(event, listen)
     }
 
-    fun register(event: String, listen: (HashMap<String, Any>?) -> LinkedHashMap<String, Any>?) {
+    fun register(event: String, listen: (LinkedHashMap<String, Any>?) -> LinkedHashMap<String, Any>?) {
         chain.get()!!.eventRegister(event, listen)
     }
 
@@ -251,7 +251,7 @@ abstract class Node {
         return chain.get()!!.eventHas(event)
     }
 
-    fun request(event: String, any: LinkedHashMap<String, Any> = LinkedHashMap()): HashMap<String, Any>? {
+    fun request(event: String, any: LinkedHashMap<String, Any> = LinkedHashMap()): LinkedHashMap<String, Any>? {
         return chain.get()!!.eventRequest(event, any)
     }
 
@@ -267,7 +267,7 @@ abstract class Node {
         reqP7: Any? = null,
         reqP8: Any? = null
     ) {
-        var map = LinkedHashMap<String, Any>()
+        val map = LinkedHashMap<String, Any>()
         addMap(map, reqP0, "reqP0")
         addMap(map, reqP1, "reqP1")
         addMap(map, reqP2, "reqP2")
