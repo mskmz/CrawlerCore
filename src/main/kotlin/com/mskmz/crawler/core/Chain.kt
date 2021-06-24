@@ -65,7 +65,7 @@ class ChainManager {
         }
     }
 
-    fun eventRequest(event: String, reqP: HashMap<String, Any>): HashMap<String, Any>? {
+    fun eventRequest(event: String, reqP: LinkedHashMap<String, Any>): LinkedHashMap<String, Any>? {
         val listen = if (eventMapGlobe[event] != null) {
             eventMapGlobe[event]
         } else {
@@ -118,14 +118,14 @@ class ManagerChain(manager: ChainManager) : Chain() {
         managerWeak.get()?.registerEvent(event, eventMap[event]!!, globe)
     }
 
-    override fun eventRequest(event: String, reqP: HashMap<String, Any>): HashMap<String, Any>? {
+    override fun eventRequest(event: String, reqP: LinkedHashMap<String, Any>): LinkedHashMap<String, Any>? {
         if (reqP["globe"] != null && reqP["globe"] as Boolean) {
             return eventRequestGlobe(event, reqP)
         }
         return eventMap[event]?.listen(reqP)
     }
 
-    fun eventRequestGlobe(event: String, reqP: HashMap<String, Any>): HashMap<String, Any>? {
+    fun eventRequestGlobe(event: String, reqP: LinkedHashMap<String, Any>): LinkedHashMap<String, Any>? {
         return eventMap[event]?.listen(reqP) ?: return managerWeak.get()?.eventRequest(event, reqP)
     }
 
@@ -200,9 +200,9 @@ open class Chain {
         eventMap[event] = listen
     }
 
-    fun eventRegister(event: String, listen: (HashMap<String, Any>?) -> HashMap<String, Any>?) {
+    fun eventRegister(event: String, listen: (LinkedHashMap<String, Any>?) -> LinkedHashMap<String, Any>?) {
         eventMap[event] = object : EventListen {
-            override fun listen(p: HashMap<String, Any>?): HashMap<String, Any>? {
+            override fun listen(p: LinkedHashMap<String, Any>?): LinkedHashMap<String, Any>? {
                 return listen(p)
             }
         }
@@ -212,7 +212,7 @@ open class Chain {
         return eventMap[event] != null
     }
 
-    open fun eventRequest(event: String, reqP: HashMap<String, Any>): HashMap<String, Any>? {
+    open fun eventRequest(event: String, reqP: LinkedHashMap<String, Any>): LinkedHashMap<String, Any>? {
         return eventMap[event]?.listen(reqP)
     }
 }
@@ -233,7 +233,7 @@ abstract class Node {
         chain.get()!!.eventRegister(event, listen)
     }
 
-    fun register(event: String, listen: (HashMap<String, Any>?) -> HashMap<String, Any>?) {
+    fun register(event: String, listen: (HashMap<String, Any>?) -> LinkedHashMap<String, Any>?) {
         chain.get()!!.eventRegister(event, listen)
     }
 
@@ -241,11 +241,42 @@ abstract class Node {
         return chain.get()!!.eventHas(event)
     }
 
-    fun request(event: String, any: HashMap<String, Any> = HashMap()): HashMap<String, Any>? {
+    fun request(event: String, any: LinkedHashMap<String, Any> = LinkedHashMap()): HashMap<String, Any>? {
         return chain.get()!!.eventRequest(event, any)
+    }
+
+    fun requestEasy(
+        event: String,
+        reqP0: Any? = null,
+        reqP1: Any? = null,
+        reqP2: Any? = null,
+        reqP3: Any? = null,
+        reqP4: Any? = null,
+        reqP5: Any? = null,
+        reqP6: Any? = null,
+        reqP7: Any? = null,
+        reqP8: Any? = null
+    ) {
+        var map = LinkedHashMap<String, Any>()
+        addMap(map, reqP0, "reqP0")
+        addMap(map, reqP1, "reqP1")
+        addMap(map, reqP2, "reqP2")
+        addMap(map, reqP3, "reqP3")
+        addMap(map, reqP4, "reqP4")
+        addMap(map, reqP5, "reqP5")
+        addMap(map, reqP6, "reqP6")
+        addMap(map, reqP7, "reqP7")
+        addMap(map, reqP8, "reqP8")
+        request(event, map)
+    }
+
+    private fun addMap(map: LinkedHashMap<String, Any>, any: Any?, str: String) {
+        if (any != null) {
+            map[str] = any
+        }
     }
 }
 
 interface EventListen {
-    fun listen(p: HashMap<String, Any>? = null): HashMap<String, Any>?
+    fun listen(p: LinkedHashMap<String, Any>? = null): LinkedHashMap<String, Any>?
 }
