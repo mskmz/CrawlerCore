@@ -163,8 +163,8 @@ open class Chain {
     }
 
     fun end() {
-        ((chainList.size - index) until chainList.size).forEach {
-            chainList.removeAt(index)
+        while (chainList.size - 1 > currIndex()) {
+            chainList.removeLast()
         }
     }
 
