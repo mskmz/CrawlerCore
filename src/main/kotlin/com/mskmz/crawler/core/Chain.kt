@@ -148,6 +148,7 @@ class ManagerChain(manager: ChainManager) : Chain() {
         }
         chainList[index].invoke()
         index++
+        next()
     }
 }
 
@@ -227,6 +228,10 @@ open class Chain {
 
 
 abstract class Node {
+    init {
+        println(this.javaClass.name + "被创建")
+    }
+
     lateinit var chain: WeakReference<Chain>
     fun bind(chain: Chain) {
         this.chain = WeakReference(chain)
