@@ -6,10 +6,8 @@ import kotlin.collections.HashMap
 
 //在这里我们实现伪责任链
 //实现多链的切换等
+
 class ChainManager {
-    init {
-        branch("main")
-    }
 
     val branchList by lazy {
         ArrayList<String>()
